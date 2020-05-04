@@ -42,6 +42,6 @@ jobs:
         hub checkout "$FEATURE_BRANCH"
         ./yq w -i chart/Chart.yaml version "${release_version}"
         hub add chart/Chart.yaml
-        hub commit -m "Automatic: Updating chart version"
+        hub commit -m "Automatic: Updating chart version to ${release_version}"
         hub push origin "$FEATURE_BRANCH"
 
