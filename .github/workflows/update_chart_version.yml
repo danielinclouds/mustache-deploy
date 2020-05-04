@@ -40,7 +40,7 @@ jobs:
         git config --global user.name "Action"
         git config --global user.email "action@danielinclouds.com"
         hub checkout "$FEATURE_BRANCH"
-        ./yq w -i Chart.yaml version "${release_version}"
+        ./yq w -i chart/Chart.yaml version "${release_version}"
         hub add Chart.yaml
         hub commit -m "Automatic: Updating chart version"
         hub push origin "$FEATURE_BRANCH"
