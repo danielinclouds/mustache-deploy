@@ -1,0 +1,35 @@
+name: Tag Repo
+
+on:
+  pull_request:
+    types: 
+      - closed
+
+jobs:
+
+  build:
+    name: Tag Repo
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Check out code 
+      uses: actions/checkout@v2
+
+    - name: Install jx-release-version
+      if: github.event.pull_request.merged == true
+      run: |
+        wget https://github.com/jenkins-x/jx-release-version/releases/download/v1.0.24/jx-release-version_1.0.24_linux_amd64.tar.gz
+        tar zxvf jx-release-version*
+        chmod +x jx-release-version
+
+    - name: Find next release version
+      if: github.event.pull_request.merged == true
+      run: |
+        VERSION=$(./jx-release-version)
+        echo ::set-env name=release_version::$VERSION
+
+    - name: Tag Repo
+      if: github.event.pull_request.merged == true
+      run: |
+        git tag "${release_version}"
+        hub push --tags

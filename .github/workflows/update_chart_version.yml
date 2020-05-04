@@ -1,0 +1,47 @@
+name: Chart CD
+
+on:
+  pull_request:
+    types: 
+      - opened
+      - reopened
+
+jobs:
+
+  build:
+    name: Version Chart
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Check out code 
+      uses: actions/checkout@v2
+
+    - name: Install jx-release-version
+      run: |
+        wget https://github.com/jenkins-x/jx-release-version/releases/download/v1.0.24/jx-release-version_1.0.24_linux_amd64.tar.gz
+        tar zxvf jx-release-version*
+        chmod +x jx-release-version
+
+    - name: Install yq
+      run: |
+        wget https://github.com/mikefarah/yq/releases/download/3.3.0/yq_linux_amd64
+        mv yq_linux_amd64 yq
+        chmod +x yq
+
+    - name: Find next release version
+      run: |
+        VERSION=$(./jx-release-version)
+        echo ::set-env name=release_version::$VERSION
+
+    - name: Update chart version
+      env:
+        FEATURE_BRANCH: ${{ github.event.pull_request.head.ref }}
+      run: |
+        git config --global user.name "Action"
+        git config --global user.email "action@danielinclouds.com"
+        hub checkout "$FEATURE_BRANCH"
+        ./yq w -i Chart.yaml version "${release_version}"
+        hub add Chart.yaml
+        hub commit -m "Automatic: Updating chart version"
+        hub push origin "$FEATURE_BRANCH"
+

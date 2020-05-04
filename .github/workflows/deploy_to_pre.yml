@@ -1,0 +1,20 @@
+name: Deploy to Pre
+
+on:
+  push:
+    tags:
+    - 'pre'
+
+jobs:
+
+  build:
+    name: Deploy to Pre
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Deploy to pre
+      run: |
+        echo "Deploying to pre"
