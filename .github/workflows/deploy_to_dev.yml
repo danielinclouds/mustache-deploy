@@ -15,6 +15,14 @@ jobs:
     - name: Check out code
       uses: actions/checkout@v2
 
-    - name: Deploy to dev
+    - name: Debug
+      env:
+        LONG_SHA: ${{ github.sha }}
       run: |
-        echo "Deploying to dev"
+        echo "$LONG_SHA"
+
+
+    # - name: Deploy to dev
+    #   run: |
+    #     echo "Deploying to dev"
+
