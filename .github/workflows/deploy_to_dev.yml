@@ -24,6 +24,7 @@ jobs:
     
     - name: Promote to Pre
       run: |
+        set +e
         hub tag -d pre
         hub push --delete origin pre
         hub tag pre
