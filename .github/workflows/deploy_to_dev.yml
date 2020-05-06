@@ -24,6 +24,8 @@ jobs:
     
     - name: Promote to Pre
       run: |
-        git tag pre
+        hub push --delete pre
+        hub push --delete origin pre
+        hub tag pre
         hub push --tags
 
