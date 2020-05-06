@@ -24,7 +24,7 @@ jobs:
 
     - name: Promote to Prod
       run: |
-        hub push -d prod
+        hub tag -d prod
         hub push --delete origin prod
         hub tag prod
         hub push --tags
