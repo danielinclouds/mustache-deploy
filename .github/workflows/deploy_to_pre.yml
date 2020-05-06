@@ -21,11 +21,3 @@ jobs:
       run: |
         SHORT_SHA="${LONG_SHA:0:7}"
         echo "Deploying ${SHORT_SHA} => pre"
-
-    - name: Promote to Prod
-      run: |
-        set +e
-        hub tag -d prod
-        hub push --delete origin prod
-        hub tag prod
-        hub push --tags
